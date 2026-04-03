@@ -15,7 +15,8 @@ const DEFAULT_DATA = {
     missedWork: [],
     habits: [],
     goals: [],
-    notes: []
+    notes: [],
+    noteRevisions: []
 };
 
 // ===================
@@ -125,6 +126,7 @@ navItems.forEach(item => {
         if(targetId === 'habits') renderHabits();
         if(targetId === 'goals') renderGoals();
         if(targetId === 'notes') renderNotes();
+        if(targetId === 'note-revisions') renderNoteRevisions();
         if(targetId === 'suggestion') updateFocusRecommendation(checkRevisions());
     });
 });
@@ -149,6 +151,8 @@ document.querySelectorAll('.pill-btn').forEach(btn => {
 
 
 
+
+
 // Helper functions
 function saveData() {
     localStorage.setItem("upscEliteData", JSON.stringify(appData));
@@ -157,6 +161,26 @@ function saveData() {
 function generateId() {
     return Math.random().toString(36).substr(2, 9);
 }
+
+// ===================
+// Digital Clock logic
+// ===================
+function updateClock() {
+    const clockEl = document.getElementById('digitalClock');
+    if (!clockEl) return;
+    
+    const now = new Date();
+    const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+    const dateStr = now.toLocaleDateString([], { weekday: 'short', day: 'numeric', month: 'short' });
+    
+    clockEl.innerHTML = `
+        <span class="clock-date">${dateStr}</span>
+        <span class="clock-separator">|</span>
+        <span class="clock-time">${timeStr}</span>
+    `;
+}
+setInterval(updateClock, 1000);
+updateClock(); // Initial call
 
 // ===================
 // Session Logging
@@ -882,7 +906,8 @@ const modals = {
     addHabit: document.getElementById('addHabitModal'),
     addGoal: document.getElementById('addGoalModal'),
     addNote: document.getElementById('addNoteModal'),
-    addMissed: document.getElementById('addMissedModal')
+    addMissed: document.getElementById('addMissedModal'),
+    addNoteRevision: document.getElementById('addNoteRevisionModal')
 };
 
 document.querySelectorAll('.close-modal').forEach(btn => {
@@ -987,6 +1012,150 @@ window.deleteNote = function(id) {
     saveData();
     renderNotes();
 };
+
+// Note Revisions Logic
+document.getElementById('openAddNoteRevisionModal')?.addEventListener('click', () => {
+    document.getElementById('revTopic').value = '';
+    document.getElementById('revRemarks').value = '';
+    const dateInput = document.getElementById('revDate');
+    if (dateInput) {
+        // Offset by timezone so toISOString gives local date part
+        const dNow = new Date();
+        const tzOffsetMs = dNow.getTimezoneOffset() * 60000;
+        dateInput.value = (new Date(dNow - tzOffsetMs)).toISOString().split('T')[0];
+    }
+    
+    // Populate subjects
+    const subSelect = document.getElementById('revSubject');
+    if (subSelect) {
+        subSelect.innerHTML = '';
+        appData.subjects.forEach(sub => {
+            const opt = document.createElement('option');
+            opt.value = sub.name;
+            opt.textContent = sub.name;
+            subSelect.appendChild(opt);
+        });
+    }
+
+    modals.addNoteRevision.classList.add('active');
+});
+
+document.getElementById('saveNoteRevisionBtn')?.addEventListener('click', () => {
+    const date = document.getElementById('revDate').value;
+    const subject = document.getElementById('revSubject').value;
+    const type = document.getElementById('revType').value;
+    const topic = document.getElementById('revTopic').value.trim();
+    const remarks = document.getElementById('revRemarks').value.trim();
+
+    if (date && subject && type && topic) {
+        if (!appData.noteRevisions) appData.noteRevisions = [];
+        appData.noteRevisions.push({
+            id: 'n_rev_' + generateId(),
+            date,
+            subject,
+            type,
+            topic,
+            remarks
+        });
+        saveData();
+        modals.addNoteRevision.classList.remove('active');
+        renderNoteRevisions();
+    }
+});
+
+document.getElementById('filterNoteRevSubject')?.addEventListener('change', () => {
+    renderNoteRevisions();
+});
+
+document.getElementById('filterNoteRevType')?.addEventListener('change', () => {
+    renderNoteRevisions();
+});
+
+function renderNoteRevisions() {
+    const tbody = document.getElementById('note-revisions-table-body');
+    const emptyState = document.getElementById('note-revisions-empty-state');
+    const filterSubjectSelect = document.getElementById('filterNoteRevSubject');
+    const filterTypeSelect = document.getElementById('filterNoteRevType');
+    
+    if (!tbody || !filterSubjectSelect || !filterTypeSelect) return;
+    
+    // Populate subject filter dropdown if empty
+    if (filterSubjectSelect.options.length === 0) {
+        if (appData.subjects && appData.subjects.length > 0) {
+            appData.subjects.forEach(sub => {
+                const opt = document.createElement('option');
+                opt.value = sub.name;
+                opt.textContent = sub.name;
+                filterSubjectSelect.appendChild(opt);
+            });
+        } else {
+            const opt = document.createElement('option');
+            opt.value = "None";
+            opt.textContent = "No Subjects Available";
+            filterSubjectSelect.appendChild(opt);
+        }
+    }
+
+    tbody.innerHTML = '';
+    if (!appData.noteRevisions) appData.noteRevisions = [];
+    
+    const selectedSubject = filterSubjectSelect.value;
+    const selectedType = filterTypeSelect.value;
+    
+    // Filter the revisions by selected subject and type
+    const filteredRevs = appData.noteRevisions.filter(rev => {
+        const matchesSubject = rev.subject === selectedSubject;
+        const matchesType = selectedType === 'ALL' || rev.type === selectedType;
+        return matchesSubject && matchesType;
+    });
+    
+    if (filteredRevs.length === 0) {
+        if (emptyState) emptyState.style.display = 'flex';
+        if (tbody.parentElement) tbody.parentElement.style.display = 'none';
+        return;
+    }
+    
+    if (emptyState) emptyState.style.display = 'none';
+    if (tbody.parentElement) tbody.parentElement.style.display = 'table';
+    
+    // Sort by Subject, then by Date descending
+    const sortedRevs = [...filteredRevs].sort((a, b) => {
+        if (a.subject < b.subject) return -1;
+        if (a.subject > b.subject) return 1;
+        return new Date(b.date) - new Date(a.date);
+    });
+    
+    let currentSubject = null;
+    
+    sortedRevs.forEach(rev => {
+        // Group header
+        if (rev.subject !== currentSubject) {
+            const headerRow = document.createElement('tr');
+            headerRow.style.background = 'rgba(255, 255, 255, 0.05)';
+            headerRow.innerHTML = `
+                <td colspan="5" style="font-weight: 700; color: var(--primary); padding-top: 1.5rem;">
+                    ${rev.subject}
+                </td>
+            `;
+            tbody.appendChild(headerRow);
+            currentSubject = rev.subject;
+        }
+
+        const dateStr = new Date(rev.date).toLocaleDateString([], { day:'numeric', month:'short' });
+        const typeBadgeColor = rev.type === 'Mains PYQ' ? '#f59e0b' : (rev.type === 'Standard Book' ? '#3b82f6' : '#10b981');
+        const typeBadge = `<span style="font-size:0.7rem; font-weight:700; text-transform:uppercase; color:${typeBadgeColor}; border:1px solid ${typeBadgeColor}44; padding:2px 6px; border-radius:4px; background:${typeBadgeColor}11;">${rev.type || 'Study Notes'}</span>`;
+        
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td style="font-size: 0.85rem; color: var(--text-muted);">${dateStr}</td>
+            <td>${typeBadge}</td>
+            <td>-</td>
+            <td style="font-weight: 500; color: var(--text-main);">${rev.topic}</td>
+            <td style="color: var(--text-muted);">${rev.remarks || '-'}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
 
 // Goals Logic
 document.getElementById('openAddGoalModal').addEventListener('click', () => {
