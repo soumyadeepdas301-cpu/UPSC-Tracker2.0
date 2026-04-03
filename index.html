@@ -10,6 +10,8 @@
 </head>
 
 <body>
+    <!-- Digital Clock -->
+    <div id="digitalClock" class="digital-clock"></div>
 
     <!-- Global Notifications Banner -->
     <div id="sessionNotificationBanner" class="session-banner">
@@ -128,6 +130,16 @@
                         <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                     </svg>
                     Study Notes
+                </button>
+                <button class="nav-item" data-target="note-revisions">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    Revision Log
                 </button>
                 <button class="nav-item" data-target="suggestion">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -619,6 +631,59 @@
                 </div>
             </section>
 
+            <!-- Note Revisions View -->
+            <section id="note-revisions" class="view-section hidden">
+                <header class="section-header">
+                    <div>
+                        <h1>Revision Log</h1>
+                        <p>Track your subject-wise note revision history consistently.</p>
+                    </div>
+                    <div style="display:flex; gap:1rem; align-items:center;">
+                        <button class="btn btn-primary" id="openAddNoteRevisionModal" style="background: linear-gradient(135deg, #10b981, #059669);">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
+                            Log Revision
+                        </button>
+                    </div>
+                </header>
+                <div style="margin-bottom: 1.5rem; display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;">
+                    <div style="display: flex; gap: 0.8rem; align-items: center;">
+                        <label for="filterNoteRevSubject" style="color: var(--text-muted); font-size: 0.9rem;">Subject:</label>
+                        <select id="filterNoteRevSubject" style="background: var(--surface-dark); color: white; border: 1px solid var(--surface-border); border-radius: 8px; padding: 0.5rem 1rem; outline: none; min-width: 180px;">
+                            <!-- Populated via JS -->
+                        </select>
+                    </div>
+                    <div style="display: flex; gap: 0.8rem; align-items: center;">
+                        <label for="filterNoteRevType" style="color: var(--text-muted); font-size: 0.9rem;">Type:</label>
+                        <select id="filterNoteRevType" style="background: var(--surface-dark); color: white; border: 1px solid var(--surface-border); border-radius: 8px; padding: 0.5rem 1rem; outline: none; min-width: 180px;">
+                            <option value="ALL">All Types</option>
+                            <option value="Study Notes">Study Notes</option>
+                            <option value="Standard Book">Standard Book</option>
+                            <option value="Mains PYQ">Mains PYQ</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="tests-container glass-panel">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Subject</th>
+                                <th>Topic Title</th>
+                                <th>Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody id="note-revisions-table-body">
+                            <!-- Note revision rows populated via JS -->
+                        </tbody>
+                    </table>
+                    <div id="note-revisions-empty-state" class="empty-state" style="display: none;">
+                        <p>No note revisions logged yet.</p>
+                    </div>
+                </div>
+            </section>
+
         </main>
     </div>
 
@@ -1002,6 +1067,50 @@
             <footer class="modal-footer">
                 <button class="btn btn-outline close-modal">Cancel</button>
                 <button class="btn btn-primary" id="saveMissedWorkBtn">Save Item</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Add Note Revision Modal -->
+    <div class="modal-overlay" id="addNoteRevisionModal">
+        <div class="modal glass-panel">
+            <header class="modal-header">
+                <h2>Log Note Revision</h2>
+                <button class="close-modal">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="revDate">Date</label>
+                        <input type="date" id="revDate">
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label for="revSubject">Subject</label>
+                        <select id="revSubject" style="width: 100%; background: var(--surface-dark); color: white; border: 1px solid var(--surface-border); border-radius: 8px; padding: 0.6rem;">
+                            <!-- Populated via JS -->
+                        </select>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label for="revType">Revision Type</label>
+                        <select id="revType" style="width: 100%; background: var(--surface-dark); color: white; border: 1px solid var(--surface-border); border-radius: 8px; padding: 0.6rem;">
+                            <option value="Study Notes">Study Notes</option>
+                            <option value="Standard Book">Standard Book</option>
+                            <option value="Mains PYQ">Mains PYQ</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label for="revTopic">Topic Title</label>
+                        <input type="text" id="revTopic" placeholder="e.g. Fundamental Rights">
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label for="revRemarks">Remarks (Optional)</label>
+                        <input type="text" id="revRemarks" placeholder="e.g. Need to memorize exceptions">
+                    </div>
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancel</button>
+                <button class="btn btn-primary" id="saveNoteRevisionBtn">Log Revision</button>
             </footer>
         </div>
     </div>
