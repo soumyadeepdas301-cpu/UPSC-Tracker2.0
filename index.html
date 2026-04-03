@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UPSC Prep Tracker Elite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- Global Notifications Banner -->
+    <div id="sessionNotificationBanner" class="session-banner">
+        <div style="flex: 1;"></div>
+        <div style="display:flex; align-items:center; justify-content:center; gap: 0.8rem; flex: 2; text-align:center;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+            <div>
+                <strong>Study Session Alert:</strong> <span id="sessNotifText">Subject</span> starts <span
+                    id="sessNotifTime">in 60 minutes</span>
+            </div>
+        </div>
+        <div style="flex: 1; text-align: right;">
+            <button id="closeNotifBtn" class="close-modal"
+                style="position:static; display:inline-block;">&times;</button>
+        </div>
+    </div>
+
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+                <span>UPSC</span>Elite
+            </div>
+
+            <nav class="nav-menu">
+                <button class="nav-item active" data-target="dashboard">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                    Dashboard
+                </button>
+                <button class="nav-item" data-target="syllabus">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                    Syllabus Tracker
+                </button>
+                <button class="nav-item" data-target="revision">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="1 4 1 10 7 10"></polyline>
+                        <polyline points="23 20 23 14 17 14"></polyline>
+                        <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+                    </svg>
+                    Revision <span id="nav-rev-badge" class="badge hidden">0</span>
+                </button>
+                <button class="nav-item" data-target="mocktests">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    Mock Tests
+                </button>
+                <button class="nav-item" data-target="timetable">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                        <line x1="16" y1="2" x2="16" y2="6"></line>
+                        <line x1="8" y1="2" x2="8" y2="6"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    Time Table
+                </button>
+                <button class="nav-item" data-target="habits">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 11 12 14 22 4"></polyline>
+                        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                    </svg>
+                    Daily Habits
+                </button>
+                <button class="nav-item" data-target="goals">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="6"></circle>
+                        <circle cx="12" cy="12" r="2"></circle>
+                    </svg>
+                    Target Goals
+                </button>
+                <button class="nav-item" data-target="sessionlogs">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    Session Logs
+                </button>
+                <button class="nav-item" data-target="missedwork">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0zM12 9v4M12 17h.01">
+                        </path>
+                    </svg>
+                    Missed Work
+                </button>
+                <button class="nav-item" data-target="notes">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                    </svg>
+                    Study Notes
+                </button>
+                <button class="nav-item" data-target="suggestion">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                    </svg>
+                    AI Advisor
+                </button>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+
+            <!-- Dashboard View -->
+            <section id="dashboard" class="view-section active">
+                <header class="section-header">
+                    <div>
+                        <h1>Overview Dashboard</h1>
+                        <p>Track your high-level progress across the entire UPSC syllabus.</p>
+                    </div>
+                    <div class="header-action" style="display: flex; gap: 1rem;">
+                        <button id="exportPDFBtn" class="btn btn-primary">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                            Export PDF Report
+                        </button>
+                        <button id="resetDataBtn" class="btn btn-outline"
+                            style="border-color: #ef4444; color: #ef4444;">Reset Progress</button>
+                    </div>
+                </header>
+
+                <div class="exam-countdown-banner glass-panel">
+                    <div class="exam-label">Countdown to UPSC 2028 (March 1st)</div>
+                    <div class="exam-days" id="exam-days-val">---</div>
+                    <div class="exam-subtext">Days of Preparation Remaining</div>
+                </div>
+
+                <div class="dashboard-stats glass-panel">
+                    <div class="stat-card">
+                        <div class="stat-title">Overall Progress</div>
+                        <div class="stat-value" id="overall-progress-val">0%</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="overall-progress-bar" style="width: 0%;"></div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Topics Completed</div>
+                        <div class="stat-value" id="topics-completed-val">0 / 0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Pending Revisions</div>
+                        <div class="stat-value text-warning" id="pending-revisions-val">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-title">Pending Backlog</div>
+                        <div class="stat-value" id="pending-backlog-val" style="color: #ef4444;">0</div>
+                    </div>
+                </div>
+
+                <h2 class="sub-heading">Subject Wise Progress</h2>
+                <div class="subject-grid grid" id="dashboard-subjects-grid">
+                    <!-- Dashboard Subject Cards populated via JS -->
+                </div>
+            </section>
+
+            <!-- Syllabus Tracker View -->
+            <section id="syllabus" class="view-section hidden">
+                <header class="section-header">
+                    <div>
+                        <h1>Syllabus Tracker</h1>
+                        <p>Break down your syllabus, mark statuses, and conquer topics.</p>
+                    </div>
+                    <button class="btn btn-primary" id="openAddSubjectModal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Subject
+                    </button>
+                </header>
+
+                <div class="syllabus-container">
+                    <div class="subject-list" id="syllabus-sidebar">
+                        <!-- Subjects List populated via JS -->
+                    </div>
+                    <div class="topic-list glass-panel" id="topic-container">
+                        <div class="empty-state">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+                                style="opacity: 0.5; margin-bottom: 1rem;">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                <polyline points="14 2 14 8 20 8"></polyline>
+                                <line x1="16" y1="13" x2="8" y2="13"></line>
+                                <line x1="16" y1="17" x2="8" y2="17"></line>
+                                <polyline points="10 9 9 9 8 9"></polyline>
+                            </svg>
+                            <p>Select a subject to view topics</p>
+                        </div>
+                        <!-- Topics Table/List populated via JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Revision View -->
+            <section id="revision" class="view-section hidden">
+                <header class="section-header">
+                    <div>
+                        <h1>Spaced Repetition</h1>
+                        <p>Topics scheduled for your 1-day, 7-day, and 30-day revision cycle.</p>
+                    </div>
+                </header>
+
+                <div class="revision-grid" id="revision-container">
+                    <!-- Revision cards populated via JS -->
+                    <div class="empty-state glass-panel" id="revision-empty-state">
+                        <p>No topics due for revision today. Great job!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Mock Tests View -->
+            <section id="mocktests" class="view-section hidden">
+                <header class="section-header">
+                    <div>
+                        <h1>Tests & Mains Practice</h1>
+                        <p>Log your prelims scores and mains answer writing evaluations.</p>
+                    </div>
+                    <div style="display:flex; gap:0.5rem;">
+                        <button class="btn btn-primary" id="openAddTestModal">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Log Prelims Test
+                        </button>
+                        <button class="btn btn-primary" id="openAddMainsTestModal">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 20h9"></path>
+                                <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                            </svg>
+                            Log Mains Mock Test
+                        </button>
+                        <button class="btn btn-primary" id="openAddMainsModal">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                            </svg>
+                            Log Mains Answer
+                        </button>
+                    </div>
+                </header>
+
+                <div class="pill-nav">
+                    <button class="pill-btn active" data-mock-target="prelims">Prelims Mock</button>
+                    <button class="pill-btn" data-mock-target="mains-full">Mains Mock (Full)</button>
+                    <button class="pill-btn" data-mock-target="mains-answers">Mains Answers</button>
+                </div>
+
+                <div id="mock-view-prelims" class="mock-sub-view">
+                    <div class="tests-container glass-panel">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Test Name</th>
+                                    <th>Topic Covered</th>
+                                    <th>Score (GS)</th>
+                                    <th>Score (CSAT)</th>
+                                    <th>Accuracy %</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tests-table-body">
+                                <!-- Test rows populated via JS -->
+                            </tbody>
+                        </table>
+                        <div id="tests-empty-state" class="empty-state" style="display: none;">
+                            <p>No prelims mock tests logged yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="mock-view-mains-full" class="mock-sub-view hidden">
+                    <h2 class="sub-heading" style="margin-top: 1rem;">Full Length Mains Mock Tests</h2>
+                    <div class="tests-container glass-panel">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Test Name</th>
+                                    <th>Subject/Paper</th>
+                                    <th>Topic Covered</th>
+                                    <th>Score</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mains-tests-table-body">
+                                <!-- Mains Mock Test rows populated via JS -->
+                            </tbody>
+                        </table>
+                        <div id="mains-tests-empty-state" class="empty-state" style="display: none;">
+                            <p>No mains mock tests logged yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="mock-view-mains-answers" class="mock-sub-view hidden">
+                    <h2 class="sub-heading" style="margin-top: 1rem;">Mains Answer Writing By Topics</h2>
+                    <div class="tests-container glass-panel">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Subject</th>
+                                    <th>Topic / Question</th>
+                                    <th>Topic Covered</th>
+                                    <th>Score</th>
+                                    <th>Remarks</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mains-table-body">
+                                <!-- Mains rows populated via JS -->
+                            </tbody>
+                        </table>
+                        <div id="mains-empty-state" class="empty-state" style="display: none;">
+                            <p>No mains answers logged yet.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Session Logs View -->
+            <section id="sessionlogs" class="view-section hidden">
+                <header class="section-header">
+                    <div>
+                        <h1>Study Session Tracker</h1>
+                        <p>Detailed logs of your intensive focus sessions.</p>
+                    </div>
+                </header>
+
+                <div class="tests-container glass-panel">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Event Type</th>
+                                <th>Duration</th>
+                                <th>Personal Remarks/Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody id="session-logs-body">
+                            <!-- Session logs populated via JS -->
+                        </tbody>
+                    </table>
+                    <div id="session-logs-empty-state" class="empty-state" style="display: none;">
+                        <p>No session logs recorded yet.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Missed Work View -->
+            <section id="missedwork" class="view-section hidden">
+                <header class="section-header">
+                    <div>
+                        <h1>Missed Work Log Book</h1>
+                        <p>Track and recover missed classes, DPPs, tests, and more.</p>
+                    </div>
+                    <button class="btn btn-primary" id="openAddMissedModal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Log Missed Item
+                    </button>
+                </header>
+
+                <div class="test-pills-nav" style="margin-bottom: 2rem;">
+                    <button class="pill-btn active" data-missed-filter="all">All Items</button>
+                    <button class="pill-btn" data-missed-filter="pending">Pending Only</button>
+                    <button class="pill-btn" data-missed-filter="recovered">Recovered Only</button>
+                </div>
+
+                <div class="tests-container glass-panel">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Date Missed</th>
+                                <th>Category</th>
+                                <th>Subject/Topic</th>
+                                <th>Priority</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="missed-work-table-body">
+                            <!-- Missed work rows populated via JS -->
+                        </tbody>
+                    </table>
+                    <div id="missed-work-empty-state" class="empty-state" style="display: none;">
+                        <p>No missed work entries found.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Timetable View -->
+            <section id="timetable" class="view-section hidden">
+                <header class="section-header">
+                    <div>
+                        <h1>Weekly Time Table</h1>
+                        <p>Structure your days with focused study blocks.</p>
+                    </div>
+                    <button class="btn btn-primary" id="openAddTimetableModal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Entry
+                    </button>
+                </header>
+
+                <div class="timetable-grid glass-panel">
+                    <!-- Days Columns -->
+                    <!-- Rendered via JS -->
+                    <div id="timetable-container" class="timetable-week-view">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Suggestion View -->
+            <section id="suggestion" class="view-section hidden">
+                <header class="section-header">
+                    <div>
+                        <h1>AI Study Advisor</h1>
+                        <p>Smart, data-driven recommendations on what to study next based on your current progress.</p>
+                    </div>
+                </header>
+
+                <div class="glass-panel"
+                    style="margin-bottom: 2rem; border-left: 4px solid var(--accent-light); background: rgba(139, 92, 246, 0.1);">
+                    <h3 style="display:flex; align-items:center; gap:0.5rem; color: var(--accent-light);">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        Focus Recommendation
+                    </h3>
+                    <p id="studyRecommendationText"
+                        style="margin-top: 0.5rem; font-size: 1.05rem; line-height: 1.5; color: var(--text-main);">
+                        Analyzing your progress...</p>
+                </div>
+
+
+            </section>
+
+            </section>
+
+            <!-- Habits View -->
+            <section id="habits" class="view-section hidden">
+                <header class="section-header">
+                    <div>
+                        <h1>Daily Habits Tracker</h1>
+                        <p>Track your long-term consistency over the past 30 days.</p>
+                    </div>
+                    <button class="btn btn-primary" id="openAddHabitModal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Add Habit
+                    </button>
+                </header>
+
+                <div class="habit-grid" id="habits-page-grid"
+                    style="display:grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap:1.5rem; margin-bottom: 2rem;">
+                    <!-- Populated via JS with monthly calendars -->
+                </div>
+            </section>
+
+            <!-- Goals View -->
+            <section id="goals" class="view-section hidden">
+                <header class="section-header">
+                    <div>
+                        <h1>Goal System</h1>
+                        <p>Turn your UPSC ambitions into daily, weekly, and monthly victories.</p>
+                    </div>
+                    <button class="btn btn-primary" id="openAddGoalModal">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Set New Goal
+                    </button>
+                </header>
+
+                <div class="goals-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem;">
+                    <!-- Daily Goals -->
+                    <div class="goal-category-col glass-panel" style="padding: 1.5rem;">
+                        <h2 class="sub-heading"
+                            style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: #FF9933;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                            Daily Persistence
+                        </h2>
+                        <div id="goals-daily-list" class="goal-items-container"
+                            style="display: flex; flex-direction: column; gap: 1rem;">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Weekly Goals -->
+                    <div class="goal-category-col glass-panel" style="padding: 1.5rem;">
+                        <h2 class="sub-heading"
+                            style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: #FFFFFF;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                <line x1="16" y1="2" x2="16" y2="6"></line>
+                                <line x1="8" y1="2" x2="8" y2="6"></line>
+                                <line x1="3" y1="10" x2="21" y2="10"></line>
+                            </svg>
+                            Weekly Targets
+                        </h2>
+                        <div id="goals-weekly-list" class="goal-items-container"
+                            style="display: flex; flex-direction: column; gap: 1rem;">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+
+                    <!-- UPSC Milestones -->
+                    <div class="goal-category-col glass-panel" style="padding: 1.5rem;">
+                        <h2 class="sub-heading"
+                            style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; color: #138808;">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                            UPSC Milestones
+                        </h2>
+                        <div id="goals-milestone-list" class="goal-items-container"
+                            style="display: flex; flex-direction: column; gap: 1rem;">
+                            <!-- Populated via JS -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Notes View -->
+            <section id="notes" class="view-section hidden">
+                <header class="section-header">
+                    <div>
+                        <h1>Study Notes</h1>
+                        <p>A minimalist space for your UPSC brain dumps and critical reminders.</p>
+                    </div>
+                    <div style="display:flex; gap:1rem; align-items:center;">
+                        <div class="search-box glass-panel"
+                            style="padding: 0.4rem 0.8rem; display: flex; align-items: center; gap: 0.5rem; border-radius: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                            </svg>
+                            <input type="text" id="notesSearchInput" placeholder="Search notes..."
+                                style="background:transparent; border:none; color:white; outline:none; font-size:0.9rem;">
+                        </div>
+                        <button class="btn btn-primary" id="openAddNoteModal">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="5" x2="12" y2="19"></line>
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                            </svg>
+                            Quick Note
+                        </button>
+                    </div>
+                </header>
+
+                <div class="notes-grid" id="notes-grid"
+                    style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <!-- Populated via JS -->
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <!-- Add Subject Modal -->
+    <div class="modal-overlay" id="addSubjectModal">
+        <div class="modal glass-panel">
+            <header class="modal-header">
+                <h2>Add New Subject</h2>
+                <button class="close-modal">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newSubjectName">Subject Name</label>
+                    <input type="text" id="newSubjectName" placeholder="e.g. Indian Polity">
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancel</button>
+                <button class="btn btn-primary" id="saveSubjectBtn">Save Subject</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Add Habit Modal -->
+    <div class="modal-overlay" id="addHabitModal">
+        <div class="modal glass-panel">
+            <header class="modal-header">
+                <h2>Create Daily Habit</h2>
+                <button class="close-modal">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newHabitName">Habit Name</label>
+                    <input type="text" id="newHabitName" placeholder="e.g. Read The Hindu, Exercise">
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancel</button>
+                <button class="btn btn-primary" id="saveHabitBtn">Save Habit</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Add Topic Modal -->
+    <div class="modal-overlay" id="addTopicModal">
+        <div class="modal glass-panel">
+            <header class="modal-header">
+                <h2>Add Topic to <span id="topicSubjectNameDisplay"></span></h2>
+                <button class="close-modal">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="newTopicName">Topic Name</label>
+                    <input type="text" id="newTopicName" placeholder="e.g. Fundamental Rights">
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancel</button>
+                <button class="btn btn-primary" id="saveTopicBtn">Save Topic</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Add Test Modal -->
+    <div class="modal-overlay" id="addTestModal">
+        <div class="modal glass-panel">
+            <header class="modal-header">
+                <h2>Log Mock Test</h2>
+                <button class="close-modal">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="testDate">Date</label>
+                        <input type="date" id="testDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="testName">Test Name/Institute</label>
+                        <input type="text" id="testName" placeholder="e.g. Vision IAS Abhyaas 1">
+                    </div>
+                    <div class="form-group">
+                        <label for="testScoreGS">GS Score (/200)</label>
+                        <input type="number" id="testScoreGS" placeholder="e.g. 104.5">
+                    </div>
+                    <div class="form-group">
+                        <label for="testScoreCSAT">CSAT Score (/200)</label>
+                        <input type="number" id="testScoreCSAT" placeholder="e.g. 85">
+                    </div>
+                    <div class="form-group">
+                        <label for="testAccuracy">Accuracy % (Optional)</label>
+                        <input type="number" id="testAccuracy" placeholder="e.g. 75" min="0" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="testTopicCovered">Topic Covered</label>
+                        <input type="text" id="testTopicCovered"
+                            placeholder="e.g. Polity Full Test, Geography Sectional">
+                    </div>
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancel</button>
+                <button class="btn btn-primary" id="saveTestBtn">Log Test</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Add Timetable Modal -->
+    <div class="modal-overlay" id="addTimetableModal">
+        <div class="modal glass-panel">
+            <header class="modal-header">
+                <h2>Add Study Block</h2>
+                <button class="close-modal">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="ttDay">Day of Week</label>
+                        <select id="ttDay">
+                            <option value="Monday">Monday</option>
+                            <option value="Tuesday">Tuesday</option>
+                            <option value="Wednesday">Wednesday</option>
+                            <option value="Thursday">Thursday</option>
+                            <option value="Friday">Friday</option>
+                            <option value="Saturday">Saturday</option>
+                            <option value="Sunday">Sunday</option>
+                        </select>
+                    </div>
+                    <div style="display:flex; gap:1rem;">
+                        <div class="form-group" style="flex:1;">
+                            <label for="ttStartTime">Start Time</label>
+                            <input type="time" id="ttStartTime">
+                        </div>
+                        <div class="form-group" style="flex:1;">
+                            <label for="ttEndTime">End Time</label>
+                            <input type="time" id="ttEndTime">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="ttSubject">Subject / Activity</label>
+                        <input type="text" id="ttSubject" placeholder="e.g. GS2 - Governance, or Revision">
+                    </div>
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancel</button>
+                <button class="btn btn-primary" id="saveTimetableBtn">Save Entry</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Add Mains Modal -->
+    <div class="modal-overlay" id="addMainsModal">
+        <div class="modal glass-panel">
+            <header class="modal-header">
+                <h2>Log Mains Answer</h2>
+                <button class="close-modal">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="mainsDate">Date</label>
+                        <input type="date" id="mainsDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="mainsSubject">Subject (GS1, Ethics, Optional...)</label>
+                        <input type="text" id="mainsSubject" placeholder="e.g. GS2">
+                    </div>
+                    <div class="form-group">
+                        <label for="mainsTopic">Topic / Question</label>
+                        <input type="text" id="mainsTopic" placeholder="e.g. Salient features of Rep. of People's Act">
+                    </div>
+                    <div class="form-group">
+                        <label for="mainsScore">Score (e.g. 5.5/10)</label>
+                        <input type="text" id="mainsScore" placeholder="e.g. 5.5/10">
+                    </div>
+                    <div class="form-group">
+                        <label for="mainsRemarks">Feedback/Remarks</label>
+                        <input type="text" id="mainsRemarks" placeholder="e.g. Needs more contemporary examples">
+                    </div>
+                    <div class="form-group">
+                        <label for="mainsTopicCovered">Topic Covered</label>
+                        <input type="text" id="mainsTopicCovered" placeholder="e.g. GS2 Governance, Post-Independence">
+                    </div>
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancel</button>
+                <button class="btn btn-primary" id="saveMainsBtn">Log Answer</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Add Mains TEST Modal (Full Length) -->
+    <div class="modal-overlay" id="addMainsTestModal">
+        <div class="modal glass-panel">
+            <header class="modal-header">
+                <h2>Log Mains Mock Test</h2>
+                <button class="close-modal">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="mtDate">Date</label>
+                        <input type="date" id="mtDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="mtName">Test Name/Institute</label>
+                        <input type="text" id="mtName" placeholder="e.g. Forum IAS Full Length">
+                    </div>
+                    <div class="form-group">
+                        <label for="mtSubject">Subject/Paper (GS1, Ethics...)</label>
+                        <input type="text" id="mtSubject" placeholder="e.g. GS 1">
+                    </div>
+                    <div class="form-group">
+                        <label for="mtTopicCovered">Topic Covered</label>
+                        <input type="text" id="mtTopicCovered"
+                            placeholder="e.g. Full Syllabus, World History Sectional">
+                    </div>
+                    <div class="form-group">
+                        <label for="mtScore">Score (e.g. 105/250)</label>
+                        <input type="text" id="mtScore" placeholder="e.g. 105/250">
+                    </div>
+                    <div class="form-group">
+                        <label for="mtRemarks">Remarks/Focus Areas</label>
+                        <input type="text" id="mtRemarks" placeholder="e.g. Improve intro and data points">
+                    </div>
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancel</button>
+                <button class="btn btn-primary" id="saveMainsTestBtn">Log Test</button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Floating Focus Timer -->
+    <div id="focusTimer" class="floating-timer glass-panel">
+        <div class="timer-header" id="timerHeader">
+            <h3>Focus Timer</h3>
+            <div style="display:flex; gap:0.5rem; align-items:center;">
+                <button id="fullscreenTimerBtn" class="timer-btn-icon" title="Full Screen">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3">
+                        </path>
+                    </svg>
+                </button>
+                <button id="toggleTimerBtn" class="timer-btn-icon" title="Minimize">
+                    <svg width="16" height="16" id="timerToggleIcon" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <div id="timerBody" class="timer-body">
+            <div class="timer-tabs">
+                <button id="modeCountdownBtn" class="timer-tab active">Countdown</button>
+                <button id="modeStopwatchBtn" class="timer-tab">Stopwatch</button>
+            </div>
+            <div class="timer-display" id="timerDisplay">00:00</div>
+            <div class="timer-controls">
+                <div id="timerInputGroup" style="display:flex; gap:0.8rem; justify-content:center; width:100%;">
+                    <input type="number" id="timerH" placeholder="h" min="0" max="23" class="time-inp">
+                    <input type="number" id="timerM" placeholder="m" min="0" max="59" class="time-inp">
+                    <input type="number" id="timerS" placeholder="s" min="0" max="59" class="time-inp">
+                </div>
+                <div style="display:flex; gap:0.6rem; justify-content:center; width:100%;">
+                    <button id="startTimerBtn" class="btn btn-primary"
+                        style="flex:1; justify-content:center;">Start</button>
+                    <button id="resetTimerBtn" class="btn btn-outline"
+                        style="flex:1; justify-content:center;">Reset</button>
+                </div>
+            </div>
+            <div id="timerMessage" class="timer-message hidden">Time is almost up!</div>
+        </div>
+    </div>
+
+    <!-- Add Note Modal -->
+    <div class="modal-overlay" id="addNoteModal">
+        <div class="modal glass-panel">
+            <header class="modal-header">
+                <h2>Quick Note</h2>
+                <button class="close-modal">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Title (Optional)</label>
+                    <input type="text" id="newNoteTitle" placeholder="e.g. Economy Tip">
+                </div>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label>Content</label>
+                    <textarea id="newNoteContent" rows="10" placeholder="Write your note here..."
+                        style="width:100%; background:var(--bg-hover); color:white; border:1px solid var(--surface-border); border-radius:8px; padding:0.8rem; font-family:inherit; resize:vertical;"></textarea>
+                </div>
+                <button class="btn btn-primary" id="saveNoteBtn"
+                    style="width: 100%; justify-content: center; margin-top: 1.5rem;">
+                    Save to Think Pad
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Goal Modal -->
+    <div class="modal-overlay" id="addGoalModal">
+        <div class="modal glass-panel">
+            <header class="modal-header">
+                <h2>Set New Goal</h2>
+                <button class="close-modal">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Goal Description</label>
+                    <input type="text" id="newGoalText" placeholder="e.g. Finish Ethics Module 1">
+                </div>
+                <div class="form-group" style="margin-top: 1rem;">
+                    <label>Category</label>
+                    <select id="newGoalCategory" class="form-input"
+                        style="width: 100%; background: var(--bg-hover); color: white; border: 1px solid var(--surface-border); border-radius: 8px; padding: 0.6rem;">
+                        <option value="daily">Daily Persistence</option>
+                        <option value="weekly">Weekly Target</option>
+                        <option value="milestone">UPSC Milestone</option>
+                    </select>
+                </div>
+                <button class="btn btn-primary" id="saveGoalBtn"
+                    style="width: 100%; justify-content: center; margin-top: 1.5rem;">
+                    Add Target
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Missed Work Modal -->
+    <div class="modal-overlay" id="addMissedModal">
+        <div class="modal glass-panel">
+            <header class="modal-header">
+                <h2>Log Missed Work</h2>
+                <button class="close-modal">&times;</button>
+            </header>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="missedType">Type of Work</label>
+                        <select id="missedType"
+                            style="width: 100%; background: var(--bg-hover); color: white; border: 1px solid var(--surface-border); border-radius: 8px; padding: 0.6rem;">
+                            <option value="Class">Class</option>
+                            <option value="DPP">DPP (Daily Practice)</option>
+                            <option value="DMP">DMP (Mains Answer)</option>
+                            <option value="Test">Mock Test</option>
+                            <option value="Revision">Revision Session</option>
+                            <option value="Newspaper">Newspaper Reading</option>
+                            <option value="CurrentAffairs">Current Affairs</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="missedDate">Date Missed</label>
+                        <input type="date" id="missedDate">
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label for="missedSubject">Subject / Specific Item</label>
+                        <input type="text" id="missedSubject" placeholder="e.g. Economy - Banking, Vision Test 5">
+                    </div>
+                    <div class="form-group">
+                        <label for="missedPriority">Priority</label>
+                        <select id="missedPriority"
+                            style="width: 100%; background: var(--bg-hover); color: white; border: 1px solid var(--surface-border); border-radius: 8px; padding: 0.6rem;">
+                            <option value="High">High Priority</option>
+                            <option value="Medium" selected>Medium</option>
+                            <option value="Low">Low Priority</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="grid-column: span 2;">
+                        <label for="missedNote">Reason / Note (Optional)</label>
+                        <textarea id="missedNote" rows="3" placeholder="Why was it missed?"
+                            style="width:100%; background:var(--bg-hover); color:white; border:1px solid var(--surface-border); border-radius:8px; padding:0.8rem;"></textarea>
+                    </div>
+                </div>
+            </div>
+            <footer class="modal-footer">
+                <button class="btn btn-outline close-modal">Cancel</button>
+                <button class="btn btn-primary" id="saveMissedWorkBtn">Save Item</button>
+            </footer>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+<script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.11.0/firebase-analytics.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    const firebaseConfig = {
+        apiKey: "AIzaSyBThqDPwM4xLN5oOm7dB8Wt_Ih5FjKDBqc",
+        authDomain: "upsc-elite-tracker.firebaseapp.com",
+        projectId: "upsc-elite-tracker",
+        storageBucket: "upsc-elite-tracker.firebasestorage.app",
+        messagingSenderId: "40262527049",
+        appId: "1:40262527049:web:9b6525c222862a05e8f798",
+        measurementId: "G-VZQH7J563K"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+</script>
+
+</html>
